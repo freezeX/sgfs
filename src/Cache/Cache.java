@@ -25,6 +25,9 @@ public class Cache {
 	public synchronized void set(String key, Object value) {
 		table.put(key, new CacheNode(value, duration));
 	}
+	public void stop() {
+		s.stopSweeper();
+	}
 	
 }
 

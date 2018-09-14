@@ -25,11 +25,12 @@ public class Sweeper{
 	}
 	public void start(){
 		timer = new Timer();
-		timer.schedule(new sweepTask(), interval);
+		timer.scheduleAtFixedRate(new sweepTask(), 0, interval);;
 	}
 	class sweepTask extends TimerTask{
 		public void run(){
 			if (!stop) {
+				System.out.println("Sweeping");
 				sweep();
 			}else {
 				timer.cancel();
