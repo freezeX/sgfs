@@ -1,11 +1,10 @@
 package Cache;
 
-import java.time.Duration;
 
 public class cacheTest {
 	public Cache cache;
 	public cacheTest() {
-		cache = new Cache(Duration.ofSeconds(3), 5000);
+		cache = new Cache(3000, 5000);
 	}
 	public void testGet(String s){
 		CacheNode node = cache.table.get(s);
@@ -22,7 +21,7 @@ public class cacheTest {
 	public void testTimeout() {
 		testSet("fdsfs","dsfa");
 		try {
-			Thread.sleep(4000);
+			Thread.sleep(6000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

@@ -1,16 +1,17 @@
 package Cache;
 import java.util.*;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.time.*;
 
 public class Cache {
 	public HashMap<String,CacheNode> table;
 	public Duration duration;
 	private Sweeper s;
-	public Cache(Duration d, long interval) {
-		duration = d;
+	public Cache(long ms, long interval) {
+		duration = Duration.ofMillis(ms);
 		s = new Sweeper(interval, this);
 		table = new HashMap<>();
-		
 		s.start();
 	}
 	public synchronized Object get(String str) {
@@ -27,6 +28,7 @@ public class Cache {
 	}
 	public void stop() {
 		s.stopSweeper();
+		
 	}
 	
 }
