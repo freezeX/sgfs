@@ -1,8 +1,11 @@
 package Clients;
 import java.io.*;
 import java.util.*;
+
+import com.oracle.webservices.internal.api.databinding.Databinding;
+
 import java.rmi.*;
-import Cache.Cache;
+import Cache.*;
 import Utilities.*;
 
 public class Client {
@@ -48,13 +51,15 @@ public class Client {
 	public void delete(String path) {
 		master.delete(path);
 	}
-	public void append(String path, byte[] data) throws Exception {
+	public void append(String path, byte[] data) throws AppendLimitException {
 		if (data.length > AppendSize) {
 			throw new AppendLimitException("Reach Append Limit");
 		}
 		long fileLength = getFileLength(path);
-		long chunkID = 
+		long chunkID = fileLength / ChunkSize;
+		chunkLocation t = getChunkLocation(path, chunkID);
 		
+		 
 	}
 	public void write(String path, byte[] data) {
 		
@@ -66,4 +71,30 @@ public class Client {
 		locationCache.stop();
 		leaseHolderCache.stop();
 	}
+	public chunkLocation getChunkLocation(String path, Long chunkID){
+		String key = path + ","+ chunkID.toString();
+		chunkLocation n = (chunkLocation)locationCache.get(key);
+		if (n == null) {
+			try {
+				n = master.getChunkLocation(path, chunkID);
+				if (n == null) {
+					n = master.addChunk(path, chunkID);
+				}
+			} catch (ChunkExistException e) {
+				n = getChunkLocation(path, chunkID);
+			}
+			locationCache.set(key, n);
+			}
+		return n;
+	}
+		
+	public void addChunk(String path, long chunkID) throws ChunkExistException {
+		master.addChunk(path,chunkID);
+	}
+	
+	public void pushData(chunkLocation c, byte[] data, dataID d) {
+		
+	}
+	
+	
 }
