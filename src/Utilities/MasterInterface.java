@@ -20,4 +20,6 @@ public interface MasterInterface extends Remote {
 	public chunkLocation addChunk(String path,long chunkID) throws ChunkExistException;
 	
 	public void append(String path, long chunkID, chunkLocation cL, dataID d) throws NoEnoughSpaceException;
+	
+	public InfoLeaseHolder findLeaseHolder(String key);
 }
