@@ -137,7 +137,7 @@ public class Client {
 			byte[] dataFeed = new byte[(int) (endByteIdx - startByteIdx +1)];
 			primary.read(path,i, dataFeed,startByteIdx, endByteIdx);
 			System.arraycopy(dataFeed, 0, data, (int) writeIdx, dataFeed.length);
-			writeIdx = writeIdx + dataFeed. length;
+			writeIdx = writeIdx + dataFeed.length;
 			
 		}
 		
