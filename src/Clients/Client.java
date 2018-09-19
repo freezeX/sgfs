@@ -36,7 +36,7 @@ public class Client {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		long timeout = Long.parseLong(p.getProperty("Timeout"));
+		long timeout = Long.parseLong(p.getProperty("Timeout")); 
 		long interval = Long.parseLong(p.getProperty("Interval"));
 		ChunkSize = Long.parseLong(p.getProperty("ChunkSize"));
 		AppendSize = Long.parseLong(p.getProperty("AppendSize"));

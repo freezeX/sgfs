@@ -9,5 +9,5 @@ public interface ChunkInterface extends Remote{
 	
 	public void write(String path, long chunkID, chunkLocation cL, DataID dataID, long startIndex);
 	
-	public void read(String path, long chunkID,byte[] data, long startByteIdx, long endByteIdx);
+	public void read(String path, long chunkID,byte[] data, long startByteIdx, long endByteIdx); 
 }
