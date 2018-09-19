@@ -1,5 +1,6 @@
 package Clients;
 import java.io.*;
+import java.net.MalformedURLException;
 import java.util.*;
 
 import com.oracle.webservices.internal.api.databinding.Databinding;
@@ -7,6 +8,11 @@ import com.oracle.webservices.internal.api.databinding.Databinding;
 import java.rmi.*;
 import Cache.*;
 import Utilities.*;
+import Utilities.FileSystemException.AppendLimitException;
+import Utilities.FileSystemException.ChunkExistException;
+import Utilities.RMIInterface.ChunkInterface;
+import Utilities.RMIInterface.MasterInterface;
+import sun.net.www.http.ChunkedInputStream;
 
 public class Client {
 	private MasterInterface master;
@@ -51,24 +57,39 @@ public class Client {
 	public void delete(String path) {
 		master.delete(path);
 	}
-	public void append(String path, byte[] data) throws AppendLimitException {
+	public void append(String path, byte[] data) throws AppendLimitException, MalformedURLException, RemoteException, NotBoundException {
 		if (data.length > AppendSize) {
 			throw new AppendLimitException("Reach Append Limit");
 		}
 		long fileLength = getFileLength(path);
 		long chunkID = fileLength / ChunkSize;
 		chunkLocation t = getChunkLocation(path, chunkID);
-		dataID d = new dataID(clientID);
-		pushData(t, data, d);
+		DataID d = new DataID(clientID);
+		pushData(t.chunkAddress, data, d);
+		String primaryAddr = findLeaseHolder(t.chunkHandle);
+		ChunkInterface primary = (ChunkInterface) Naming.lookup(primaryAddr);
 		try {
-			master.append(path, chunkID, t, new dataID(clientID));
+			primary.append(path, chunkID, t, d);
 		} catch (NoEnoughSpaceException e) {
 			append(path, data);
 		}
 		 
 	}
-	public void write(String path, byte[] data) {
-		
+	public void write(String path, byte[] data, long offset) {
+		long length = data.length;
+		long startChunkID = offset/ChunkSize;
+		long endChunkID = ((offset + length - 1)/ChunkSize) + 1;
+		for (long i = startChunkID; i< endChunkID; i++) {
+			chunkLocation t = getChunkLocation(path, i);
+			long startIndex = (i==startChunkID)? offset%ChunkSize : 0;
+			long endIndex = ChunkSize;
+			pushData(t.chunkAddress, data, new DataID(clientID));
+			String primaryAddr = findLeaseHolder(t.chunkHandle);
+			ChunkInterface primary = (ChunkInterface) Naming.lookup(primaryAddr);
+			primary.write()
+			}
+			
+		}
 	}
 	public long getFileLength(String path) {
 		return master.getFileLength(path);
@@ -98,7 +119,7 @@ public class Client {
 		master.addChunk(path,chunkID);
 	}
 	
-	public void pushData(chunkLocation c, byte[] data, dataID d) {
+	public void pushData(String[] locations, byte[] data, DataID d) {
 		
 	}
 	public String findLeaseHolder(long chunkHandle) {

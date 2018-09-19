@@ -1,5 +1,4 @@
-package Utilities;
-import java.time.Duration;;
+package Utilities;;
 public class InfoLeaseHolder {
 	public String primary;
 	public long duration;

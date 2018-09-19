@@ -1,6 +1,9 @@
-package Utilities;
+package Utilities.RMIInterface;
 import java.rmi.Remote;
-import java.rmi.RemoteException;
+
+import Utilities.InfoLeaseHolder;
+import Utilities.chunkLocation;
+import Utilities.FileSystemException.ChunkExistException;
 
 public interface MasterInterface extends Remote {
 	public long getID();
@@ -18,8 +21,6 @@ public interface MasterInterface extends Remote {
 	public chunkLocation getChunkLocation(String path, long chunkID);
 	
 	public chunkLocation addChunk(String path,long chunkID) throws ChunkExistException;
-	
-	public void append(String path, long chunkID, chunkLocation cL, dataID d) throws NoEnoughSpaceException;
 	
 	public InfoLeaseHolder findLeaseHolder(String key);
 }
