@@ -118,10 +118,10 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
 		}
 	}
 
-	@Override
-	public void heartbeat() {
-		// TODO Auto-generated method stub
+	// @Override
+	// public void heartbeat() {
+	// 	// TODO Auto-generated method stub
 		
-	}
+	// }
 	
 }

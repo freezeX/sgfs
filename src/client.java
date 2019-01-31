@@ -158,7 +158,4 @@ public class Client {
 		return primary;
 	}
 	
-	public static void main(String[] args) {
-		System.out.println("client");
-	}
 }
