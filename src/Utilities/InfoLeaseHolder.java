@@ -1,9 +1,10 @@
-package Utilities;;
+package Utilities;
+import java.time.*;
 public class InfoLeaseHolder {
 	public String primary;
-	public long duration;
-	public InfoLeaseHolder(String p, long d) {
+	public LocalDateTime expiration;
+	public InfoLeaseHolder(String p, LocalDateTime d) {
 		primary = p;
-		duration = d;
+		expiration = d;
 	}
 }

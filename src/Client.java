@@ -1,4 +1,4 @@
-package Clients;
+
 import java.io.*;
 import java.net.MalformedURLException;
 import java.util.*;
@@ -11,6 +11,7 @@ import Cache.*;
 import Utilities.*;
 import Utilities.FileSystemException.AppendLimitException;
 import Utilities.FileSystemException.ChunkExistException;
+import Utilities.FileSystemException.NoEnoughSpaceException;
 import Utilities.RMIInterface.ChunkInterface;
 import Utilities.RMIInterface.MasterInterface;
 import javafx.scene.chart.PieChart.Data;
@@ -53,9 +54,6 @@ public class Client {
 		master.mkdir(path);
 	}
 	
-	public String list(String path) {
-		return master.list(path);
-	}
 	public void delete(String path) {
 		master.delete(path);
 	}
@@ -154,11 +152,13 @@ public class Client {
 		String primary = (String) leaseHolderCache.get(key);
 		if (primary == null) {
 			InfoLeaseHolder reply = master.findLeaseHolder(key);
-			leaseHolderCache.setWithTimeOut(key, primary, reply.duration);
+			leaseHolderCache.setWithTimeOut(key, primary, reply.expiration);
 			primary = reply.primary;
 		}
 		return primary;
 	}
 	
-	
+	public static void main(String[] args) {
+		System.out.println("client");
+	}
 }

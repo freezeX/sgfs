@@ -12,8 +12,6 @@ public interface MasterInterface extends Remote {
 	
 	public void delete(String path);
 	
-	public String list(String path);
-	
 	public void create(String path);
 	
 	public long getFileLength(String path);
@@ -23,4 +21,6 @@ public interface MasterInterface extends Remote {
 	public chunkLocation addChunk(String path,long chunkID) throws ChunkExistException;
 	
 	public InfoLeaseHolder findLeaseHolder(String key);
+	
+	public void heartbeat();
 }

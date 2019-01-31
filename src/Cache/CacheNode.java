@@ -8,6 +8,10 @@ public class CacheNode {
 		this.value = value;
 		this.t = LocalDateTime.now().plus(timeout);
 	}
+	public CacheNode(Object value, LocalDateTime t) {
+		this.value = value;
+		this.t = t;
+	}
 	public boolean expired() {
 		return LocalDateTime.now().isAfter(t);
 	}

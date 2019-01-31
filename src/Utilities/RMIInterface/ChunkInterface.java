@@ -1,7 +1,8 @@
 package Utilities.RMIInterface;
 import java.rmi.Remote;
-import Utilities.NoEnoughSpaceException;
+
 import Utilities.chunkLocation;
+import Utilities.FileSystemException.NoEnoughSpaceException;
 import Utilities.DataID;
 
 public interface ChunkInterface extends Remote{
